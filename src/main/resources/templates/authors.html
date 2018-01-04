@@ -13,10 +13,30 @@
 			<div class="page-header">
 				<h1>Authors</h1>
 			</div>
-	
-			<p>
-				<img th:src="@{/imgs/relatorio-custos.png}" class="img-responsive"/>
-			</p>
+
+			<table class="table table-bordered">
+				<thead>
+				<tr>
+					<th>Name</th>
+					<th>BirthDay</th>
+					<th>Nationality</th>
+					<th></th>
+					<th></th>
+				</tr>
+				</thead>
+
+				<tbody>
+				<th:block th:each="author : ${authors}">
+					<tr>
+						<td th:text="${author.name}">...</td>
+						<td th:text="${author.birthDay}">...</td>
+						<td th:text="${author.nationality}">...</td>
+						<td style="text-align:  center;font-size: 18px;color: bl"> <i class="fa fa-pencil-square-o"></i> </td>
+						<td style="text-align:  center;font-size: 18px;color: green;"> <i class="fa fa-trash"></i> </td>
+					</tr>
+				</th:block>
+				</tbody>
+			</table>
 		</div>	
 	</body>
 </html>

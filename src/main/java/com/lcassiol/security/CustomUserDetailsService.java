@@ -1,5 +1,8 @@
 package com.lcassiol.security;
 
+import com.lcassiol.IServices.IUserService;
+import com.lcassiol.entities.Role;
+import com.lcassiol.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,98 +12,64 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.lcassiol.utils.JdbcUtils.PERMISSOES_POR_GRUPO;
-import static com.lcassiol.utils.JdbcUtils.PERMISSOES_POR_USUARIO;
-import static com.lcassiol.utils.JdbcUtils.USUARIO_POR_LOGIN;
+import java.util.Set;
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private static final Logger logger = Logger.getLogger(CustomUserDetailsService.class.getSimpleName());
-
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    private IUserService userService;
+
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        Connection connection = null;
 
         try {
-            connection = dataSource.getConnection();
+            CustomUserDetails userDetails = searchUser(login);
 
-            CustomUserDetails userDetails = buscarUsuario(connection, login);
+            Collection<GrantedAuthority> permissoesPorUsuario = searchPermissions(login);
 
-            Collection<GrantedAuthority> permissoesPorUsuario = buscarPermissoes(connection,
-                    login, PERMISSOES_POR_USUARIO);
-
-            Collection<GrantedAuthority> permissoesPorGrupo = buscarPermissoes(connection,
-                    login, PERMISSOES_POR_GRUPO);
+            Collection<GrantedAuthority> permissoesPorGrupo = new ArrayList<>();
 
             userDetails.getAuthorities().addAll(permissoesPorUsuario);
             userDetails.getAuthorities().addAll(permissoesPorGrupo);
 
             return userDetails;
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Problemas com a tentativa de conexão!", e);
             throw new UsernameNotFoundException("Problemas com a tentativa de conexão!", e);
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                logger.log(Level.SEVERE, "Problemas ao tentar fechar a conexão!", e);
-                throw new UsernameNotFoundException("Problemas ao tentar fechar a conexão!", e);
-            }
         }
     }
 
-    public CustomUserDetails buscarUsuario(Connection connection, String login) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(USUARIO_POR_LOGIN);
-        ps.setString(1, login);
+    public CustomUserDetails searchUser(String login) {
+        User user = userService.findUserByEmail(login);
 
-        ResultSet rs = ps.executeQuery();
-
-        if (!rs.next()) {
+        if (user == null) {
             throw new UsernameNotFoundException("Usuário " + login + " não encontrado!");
         }
 
-        String nome = rs.getString("nome");
-        String password = rs.getString("senha");
-        boolean ativo = rs.getBoolean("ativo");
-
-        rs.close();
-        ps.close();
-
-        return new CustomUserDetails(nome, login, password, ativo);
+        return new CustomUserDetails(user.getName(), login, user.getPassword(), user.getActive() == 1);
     }
 
-    public Collection<GrantedAuthority> buscarPermissoes(Connection connection, String login, String sql) throws SQLException {
-        List<GrantedAuthority> permissoes = new ArrayList<>();
+    public Collection<GrantedAuthority> searchPermissions(String login){
+        List<GrantedAuthority> permission = new ArrayList<>();
+        User user = userService.findUserByEmail(login);
 
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setString(1, login);
+        if(user != null){
+            Set<Role> roles = user.getRoles();
 
-        ResultSet rs = ps.executeQuery();
+            for(Role role : roles){
+                permission.add(new SimpleGrantedAuthority(role.getRole()));
+            }
 
-        while (rs.next()) {
-            permissoes.add(new SimpleGrantedAuthority(rs.getString("nome_permissao")));
         }
 
-        rs.close();
-        ps.close();
-
-        return permissoes;
+        return permission;
     }
 
 }

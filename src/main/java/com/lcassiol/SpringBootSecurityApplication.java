@@ -1,18 +1,14 @@
 package com.lcassiol;
 
-import com.lcassiol.entities.Author;
-import com.lcassiol.entities.Book;
-import com.lcassiol.IRepositories.IAuthorRepository;
-import com.lcassiol.IRepositories.IBookRepository;
+import com.lcassiol.IRepositories.*;
+import com.lcassiol.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @SpringBootApplication
 public class SpringBootSecurityApplication {
@@ -22,6 +18,12 @@ public class SpringBootSecurityApplication {
 
 	@Autowired
 	IAuthorRepository authorRepository;
+
+	@Autowired
+	IUserRepository userRepository;
+
+	@Autowired
+	IRoleRepository roleRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootSecurityApplication.class, args);
@@ -74,6 +76,48 @@ public class SpringBootSecurityApplication {
 
 			List<Book> books = bookRepository.findAll();
 			books.forEach(System.out::println);
+
+			List<Author> authors = authorRepository.findAll();
+			authors.forEach(System.out::println);
+
+			Role rol = new Role();
+			rol.setRole("PG_PROJETOS");
+			rol = roleRepository.save(rol);
+
+			Role rol2 = new Role();
+			rol2.setRole("PG_REL_EQUIPE");
+			rol2 = roleRepository.save(rol2);
+
+			Role rol3 = new Role();
+			rol3.setRole("PG_REL_CUSTOS");
+			rol3 = roleRepository.save(rol3);
+
+			List<Role> rolesOnDb = roleRepository.findAll();
+			System.out.println("------------------=-=-=-=-");
+			rolesOnDb.forEach(System.out::println);
+
+			Set<Role> roles = new HashSet<>();
+			roles.add(rol);
+			roles.add(rol2);
+			roles.add(rol3);
+
+			User user = new User();
+			user.setId(1);
+			user.setActive(1);
+			user.setEmail("cassio@xarx.co");
+			user.setName("Cassio");
+			user.setLastName("carvalhis");
+			user.setPassword("$2a$10$HDabdSxfveSXzB.O6KI9X.yqn6D2Wv/F8P0xyPPlz6LMd0qIitJ1a");
+			user.setRoles(roles);
+
+			user = userRepository.save(user);
+			System.out.println(user);
+
+			System.out.println("---------------------");
+			System.out.println("Users here");
+			List<User> users = userRepository.findAll();
+			users.forEach(System.out::println);
+
 
 		};
 	}
