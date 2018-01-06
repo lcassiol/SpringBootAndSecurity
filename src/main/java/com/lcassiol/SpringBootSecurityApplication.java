@@ -74,12 +74,6 @@ public class SpringBootSecurityApplication {
 
 			this.bookRepository.save(insertBooks);
 
-			List<Book> books = bookRepository.findAll();
-			books.forEach(System.out::println);
-
-			List<Author> authors = authorRepository.findAll();
-			authors.forEach(System.out::println);
-
 			Role rol = new Role();
 			rol.setRole("ROLE_BOOKS");
 			rol = roleRepository.save(rol);
