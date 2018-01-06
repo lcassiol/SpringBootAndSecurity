@@ -81,7 +81,7 @@ public class SpringBootSecurityApplication {
 			authors.forEach(System.out::println);
 
 			Role rol = new Role();
-			rol.setRole("PG_PROJETOS");
+			rol.setRole("ROLE_BOOKS");
 			rol = roleRepository.save(rol);
 
 			Role rol2 = new Role();
