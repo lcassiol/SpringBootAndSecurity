@@ -32,9 +32,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 authorizeRequests()
-                    .antMatchers("/books").hasAnyAuthority("PG_PROJETOS")
+                    .antMatchers("/books").hasAnyAuthority("ROLE_BOOKS")
                     .antMatchers("/authors").hasAnyAuthority("PG_REL_CUSTOS")
                     .antMatchers("/relatorio-equipe").hasAnyAuthority("PG_REL_EQUIPE")
+                    .antMatchers("/user-registration").permitAll()
                     .anyRequest()
                     .authenticated()
                 .and()
