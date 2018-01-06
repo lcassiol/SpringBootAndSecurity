@@ -83,7 +83,7 @@ public class SpringBootSecurityApplication {
 			rol2 = roleRepository.save(rol2);
 
 			Role rol3 = new Role();
-			rol3.setRole("PG_REL_CUSTOS");
+			rol3.setRole("ROLE_AUTHORS");
 			rol3 = roleRepository.save(rol3);
 
 			List<Role> rolesOnDb = roleRepository.findAll();

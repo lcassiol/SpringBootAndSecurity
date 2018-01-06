@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.
                 authorizeRequests()
                     .antMatchers("/books").hasAnyAuthority("ROLE_BOOKS")
-                    .antMatchers("/authors").hasAnyAuthority("PG_REL_CUSTOS")
+                    .antMatchers("/authors").hasAnyAuthority("ROLE_AUTHORS")
                     .antMatchers("/relatorio-equipe").hasAnyAuthority("PG_REL_EQUIPE")
                     .antMatchers("/user-registration").permitAll()
                     .anyRequest()
