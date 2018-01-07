@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/books").hasAnyAuthority("ROLE_BOOKS")
                     .antMatchers("/authors").hasAnyAuthority("ROLE_AUTHORS")
                     .antMatchers("/relatorio-equipe").hasAnyAuthority("PG_REL_EQUIPE")
+                    .antMatchers("/users").hasAnyAuthority("ROLE_ADMIN")
                     .antMatchers("/user-registration").permitAll()
                     .anyRequest()
                     .authenticated()
