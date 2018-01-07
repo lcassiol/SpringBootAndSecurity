@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html
+		lang="en"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layout}"
+		xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Users</title>
+</head>
+
+<body>
+
+<div layout:fragment="content">
+
+	<div class="page-header">
+		<h1>Users</h1>
+	</div>
+
+	<table class="table table-bordered">
+		<thead>
+		<tr>
+			<th>Nome</th>
+			<th>Email</th>
+			<th>Roles</th>
+			<th></th>
+			<th></th>
+		</tr>
+		</thead>
+
+		<tbody>
+			<th:block th:each="user : ${users}">
+				<tr>
+					<td th:text="${user.name}">...</td>
+					<td th:text="${user.email}">...</td>
+					<td th:text="${user.roles}">...</td>
+					<form th:action="@{/edit-users}" method="get">
+						<td style="text-align:  center;font-size: 18px;color: bl">
+							<button class="btn btn-md btn-warning btn-block" type="Submit">
+								 <i class="fa fa-pencil-square-o"></i>
+							</button>
+						</td>
+					</form>
+
+					<td style="text-align:  center;font-size: 18px;color: green;"> <i class="fa fa-trash"></i> </td>
+				</tr>
+			</th:block>
+		</tbody>
+	</table>
+</div>
+</body>
+</html>
