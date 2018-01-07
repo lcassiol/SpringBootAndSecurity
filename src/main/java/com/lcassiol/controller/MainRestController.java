@@ -49,11 +49,6 @@ public class MainRestController {
     public String books(Model model){
 
         model.addAttribute("books", bookService.getAll());
-
-        System.out.println("Users here");
-        List<User> users = userService.findAll();
-        users.forEach(System.out::println);
-
         return "books";
     }
 
@@ -61,7 +56,6 @@ public class MainRestController {
     public String authors(Model model) {
 
         model.addAttribute("authors", authorService.getAll());
-
 	    return "authors";
     }
 	
@@ -71,12 +65,50 @@ public class MainRestController {
     }
 
 
+    @RequestMapping(method = RequestMethod.GET, path = "/users")
+    public String users(Model model) {
+
+        model.addAttribute("users", userService.getAll());
+        return "users";
+    }
+
     @RequestMapping(value="/user-registration", method = RequestMethod.GET)
     public ModelAndView registration(){
         ModelAndView modelAndView = new ModelAndView();
         User user = new User();
         modelAndView.addObject("user", user);
         modelAndView.setViewName("user-registration");
+        return modelAndView;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/edit-users")
+    public String editUsers(Model model) {
+
+        model.addAttribute("user", userService.findUserByEmail("cassio@xarx.co"));
+        model.addAttribute("roles", roleRepository.findAll());
+        return "edit-users";
+    }
+
+    @RequestMapping(value = "/add-role", method = RequestMethod.POST)
+    public ModelAndView addRole(Role role) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.addObject("successMessage", "User has been registered successfully, click on top buttom for redirect to login page");
+        //modelAndView.addObject("user", userService.updateUser(user));
+        modelAndView.setViewName("edit-users");
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/edit-users", method = RequestMethod.POST)
+    public ModelAndView editUsers(User user) {
+        ModelAndView modelAndView = new ModelAndView();
+
+
+        modelAndView.addObject("successMessage", "User has been registered successfully, click on top buttom for redirect to login page");
+        modelAndView.addObject("user", userService.updateUser(user));
+        modelAndView.setViewName("edit-users");
+
         return modelAndView;
     }
 
