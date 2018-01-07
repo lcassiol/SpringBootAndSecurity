@@ -10,5 +10,7 @@ public interface IUserService {
 
     public void saveUser(User user);
 
-    public List<User> findAll();
+    public List<User> getAll();
+
+    User updateUser(User user);
 }
