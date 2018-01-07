@@ -86,6 +86,10 @@ public class SpringBootSecurityApplication {
 			rol3.setRole("ROLE_AUTHORS");
 			rol3 = roleRepository.save(rol3);
 
+			Role rol4 = new Role();
+			rol4.setRole("ROLE_ADMIN");
+			rol4 = roleRepository.save(rol4);
+
 			List<Role> rolesOnDb = roleRepository.findAll();
 			System.out.println("------------------=-=-=-=-");
 			rolesOnDb.forEach(System.out::println);
@@ -93,26 +97,19 @@ public class SpringBootSecurityApplication {
 			Set<Role> roles = new HashSet<>();
 			roles.add(rol);
 			roles.add(rol2);
-			roles.add(rol3);
+			//roles.add(rol3);
+			roles.add(rol4);
 
 			User user = new User();
 			user.setId(1);
-			user.setActive(1);
+			user.setActive(true);
 			user.setEmail("cassio@xarx.co");
 			user.setName("Cassio");
 			user.setLastName("carvalhis");
 			user.setPassword("$2a$10$HDabdSxfveSXzB.O6KI9X.yqn6D2Wv/F8P0xyPPlz6LMd0qIitJ1a");
 			user.setRoles(roles);
 
-			user = userRepository.save(user);
-			System.out.println(user);
-
-			System.out.println("---------------------");
-			System.out.println("Users here");
-			List<User> users = userRepository.findAll();
-			users.forEach(System.out::println);
-
-
+			userRepository.save(user);
 		};
 	}
 
