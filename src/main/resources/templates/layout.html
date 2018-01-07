@@ -38,6 +38,7 @@
 		                <li sec:authorize="hasAuthority('ROLE_BOOKS')"><a href="/books">Books</a></li>
 		                <li sec:authorize="hasAuthority('ROLE_AUTHORS')"><a href="/authors">Authors</a></li>
 		                <li sec:authorize="hasAuthority('PG_REL_EQUIPE')"><a href="/relatorio-equipe">Relatório Equipe</a></li>
+						<li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/users">Users</a></li>
 		            </ul>
 		            
 		            <form action="/logout" method="post" class="navbar-form navbar-right">
