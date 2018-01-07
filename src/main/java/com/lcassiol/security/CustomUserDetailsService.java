@@ -53,7 +53,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Usuário " + login + " não encontrado!");
         }
 
-        return new CustomUserDetails(user.getName(), login, user.getPassword(), user.getActive() == 1);
+        return new CustomUserDetails(user.getName(), login, user.getPassword(), user.getActive());
     }
 
     public Collection<GrantedAuthority> searchPermissions(String login){
