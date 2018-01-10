@@ -32,6 +32,7 @@ public class SpringBootSecurityApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner() {
 		return args -> {
+
 			Author author1 = new Author();
 			author1.setBirthDay(new Date());
 			author1.setName("Cassius7");
@@ -74,6 +75,7 @@ public class SpringBootSecurityApplication {
 
 			this.bookRepository.save(insertBooks);
 
+
 			Role rol = new Role();
 			rol.setRole("ROLE_BOOKS");
 			rol = roleRepository.save(rol);
@@ -97,13 +99,14 @@ public class SpringBootSecurityApplication {
 			Set<Role> roles = new HashSet<>();
 			roles.add(rol);
 			roles.add(rol2);
-			//roles.add(rol3);
+			roles.add(rol3);
 			roles.add(rol4);
 
+
 			User user = new User();
-			user.setId(1);
+			user.setId(1L);
 			user.setActive(true);
-			user.setEmail("cassio@xarx.co");
+			user.setEmail("cassio@eumail.co");
 			user.setName("Cassio");
 			user.setLastName("carvalhis");
 			user.setPassword("$2a$10$HDabdSxfveSXzB.O6KI9X.yqn6D2Wv/F8P0xyPPlz6LMd0qIitJ1a");
