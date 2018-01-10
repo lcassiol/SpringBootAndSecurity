@@ -10,7 +10,7 @@
 </head>
 <body>
 	<form th:action="@{/}" method="get">
-		<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>
+		<button class="btn btn-md btn-primary btn-block" type="Submit">Back to Main Page</button>
 	</form>	
 	
 	<div class="container">
@@ -70,7 +70,8 @@
 						<tbody>
 						<tr>
 							<td>
-								<select th:field="*{roles}" class="form-control" id="roles" name="roles">
+								<select  class="form-control" id="roles" name="roles">
+									<option th:value="null" th:selected="selected">- Please Select -</option>
 									<option th:each="role : ${roles}"
 											th:value="${role.id}"
 											th:text="${role.role}"
