@@ -13,6 +13,11 @@
 <div layout:fragment="content">
 
 	<div class="page-header">
+		<div class="col-md-2" style="float: right; margin-top: 20px; margin-right: -16px;">
+			<form th:action="@{/user-registration}" method="get">
+				<button class="btn btn-md btn-warning btn-block" type="Submit">New User</button>
+			</form>
+		</div>
 		<h1>Users</h1>
 	</div>
 
