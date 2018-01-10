@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -81,22 +82,12 @@ public class MainRestController {
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/edit-users")
-    public String editUsers(Model model) {
-
-        model.addAttribute("user", userService.findUserByEmail("cassio@xarx.co"));
-        model.addAttribute("roles", roleRepository.findAll());
-        return "edit-users";
-    }
-
-    @RequestMapping(value = "/add-role", method = RequestMethod.POST)
-    public ModelAndView addRole(Role role) {
+    @RequestMapping(method = RequestMethod.GET, path = "edit-users/{id}")
+    public ModelAndView editUsers(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.addObject("successMessage", "User has been registered successfully, click on top buttom for redirect to login page");
-        //modelAndView.addObject("user", userService.updateUser(user));
+        modelAndView.addObject("user", userService.findById(id));
+        modelAndView.addObject("roles", roleRepository.findAll());
         modelAndView.setViewName("edit-users");
-
         return modelAndView;
     }
 
@@ -107,6 +98,7 @@ public class MainRestController {
 
         modelAndView.addObject("successMessage", "User has been registered successfully, click on top buttom for redirect to login page");
         modelAndView.addObject("user", userService.updateUser(user));
+        modelAndView.addObject("roles", roleRepository.findAll());
         modelAndView.setViewName("edit-users");
 
         return modelAndView;
