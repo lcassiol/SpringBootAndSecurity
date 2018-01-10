@@ -37,7 +37,7 @@
 				<tr>
 					<td th:text="${user.name}">...</td>
 					<td th:text="${user.email}">...</td>
-					<td th:text="${user.roles}">...</td>
+					<td > <div th:each="role : ${user.roles}" th:text="${role.role}"> </div> </td>
 					<td style="text-align:  center;font-size: 18px;color: bl">
 						<a class="btn btn-md btn-warning btn-block" th:href="@{/edit-users/__${user.id}__}"><i class="fa fa-pencil-square-o"></i></a>
 					</td>
