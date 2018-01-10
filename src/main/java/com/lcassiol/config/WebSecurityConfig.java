@@ -37,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/relatorio-equipe").hasAnyAuthority("PG_REL_EQUIPE")
                     .antMatchers("/users").hasAnyAuthority("ROLE_ADMIN")
                     .antMatchers("/user-registration").permitAll()
+                    .antMatchers("/console/**").permitAll()
                     .anyRequest()
                     .authenticated()
                 .and()
@@ -50,6 +51,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .rememberMe()
                     .userDetailsService(customUserDetailsService);
+
+            //Uncomment if you want to enable h2_console
+            //http.csrf().disable();
+            //http.headers().frameOptions().disable();
 
     }
 
