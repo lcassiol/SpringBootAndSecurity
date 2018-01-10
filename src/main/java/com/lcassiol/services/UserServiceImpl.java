@@ -25,9 +25,15 @@ public class UserServiceImpl implements IUserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
+    public User findById(Long id) {
+        return userRepository.findOne(id);
+    }
+
+    @Override
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
 
     @Override
     public void saveUser(User user) {
@@ -48,13 +54,10 @@ public class UserServiceImpl implements IUserService {
         User userBeforeUpdate = findUserByEmail(userAfterUpdate.getEmail());
         Set<Role> roles = userAfterUpdate.getRoles();
         userAfterUpdate.setRoles(userBeforeUpdate.getRoles());
+        userAfterUpdate.getRoles().addAll(roles);
 
         if(userAfterUpdate.getPassword() != null){
             userAfterUpdate.setPassword(userBeforeUpdate.getPassword());
-        }
-
-        if(roles != null){
-            userAfterUpdate.getRoles().addAll(roles);
         }
 
         return userRepository.saveAndFlush(userAfterUpdate);
